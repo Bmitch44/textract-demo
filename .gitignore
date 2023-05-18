@@ -1,0 +1,11 @@
+# .gitignore
+
+# Ignore Python compiled files
+__pycache__/
+*.py[cod]
+
+# Ignore log files
+*.log
+
+# Ignore all __pycache__ directories
+**/__pycache__
