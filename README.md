@@ -1,6 +1,6 @@
 # AWS Textract Project
 
-This project aims to create a working product which utilizes AWS Textract to extract information from structured and semi-structured PDF documents. These documents may contain both handwritten text and printed text.
+This project aims to create a working product that utilizes AWS Textract to extract information from structured and semi-structured PDF documents. These documents may contain both handwritten and printed text.
 
 ## About AWS Textract
 
@@ -8,27 +8,40 @@ AWS Textract is a service that automatically extracts text and data from scanned
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+To use this application, follow the steps below:
 
 ### Prerequisites
 
-What things you need to install the software and how to install them.
+You will need an AWS account and the AWS CLI (Command Line Interface) installed on your local machine. Set up your AWS credentials to authenticate with AWS services.
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development environment running.
+1. Install Anaconda on your machine. Visit the [Anaconda website](https://www.anaconda.com/products/individual) for installation instructions.
 
-## Running the tests
+2. Create a new conda environment and install the required dependencies by running the following commands:
 
-Explain how to run the automated tests for this system.
+```
+$ conda create --name aws-text --file requirements.txt
+$ conda activate aws-text
+```
+
+## Running the Application
+
+1. Make sure you have activated the `aws-text` conda environment.
+
+2. Run the `test.py` file to start the application. This file demonstrates the usage of AWS Textract to extract information from PDF documents.
+
+```
+$ python test.py
+```
+
+
+3. The output will be saved in the `output.txt` file. You can review the extracted information there.
 
 ## Built With
 
 * [AWS Textract](https://aws.amazon.com/textract/) - Text extraction service
 
-## Authors
+## Author
 
 * **Brady Mitchelmore** - *Initial work* - [bradymitchelmore](mailto:bradymitchelmore@gmail.com)
-
-
-
