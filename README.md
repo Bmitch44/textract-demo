@@ -12,7 +12,7 @@ To use this application, follow the steps below:
 
 ### Prerequisites
 
-You will need an AWS account and the AWS CLI (Command Line Interface) installed on your local machine. Set up your AWS credentials to authenticate with AWS services.
+You will need an AWS account and the AWS CLI (Command Line Interface) installed on your local machine. Set up your AWS credentials to authenticate with AWS services. [Here](https://aws.amazon.com/getting-started/guides/setup-environment/) is a nice guide to set it all up.
 
 ### Installing
 
