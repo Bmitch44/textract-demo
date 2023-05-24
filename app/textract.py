@@ -44,7 +44,7 @@ def wait_for_analysis(job_id):
 def store_analysis_result(job_status, filepath):
     """Stores the result of AWS Textract analysis."""
     if job_status['JobStatus'] == 'SUCCEEDED':
-        result = job_status['Blocks']
+        result = job_status
 
         with open(filepath, 'w') as f:
             json.dump(result, f, indent=4)
@@ -61,4 +61,4 @@ def process_pdf(filepath, bucket, filename, output_path):
 
 
 # Example usage
-process_pdf('documents/test.pdf', 'pdf-to-text-aws', 'test.pdf', 'output.txt')
+process_pdf('documents/test.pdf', 'pdf-to-text-aws', 'test.pdf', 'app/output.json')
