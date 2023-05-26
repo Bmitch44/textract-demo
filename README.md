@@ -29,14 +29,14 @@ $ conda activate aws-text
 
 1. Make sure you have activated the `aws-text` conda environment.
 
-2. Run the `test.py` file to start the application. This file demonstrates the usage of AWS Textract to extract information from PDF documents.
+2. Run the `textract.py` file to start the application. This file demonstrates the usage of AWS Textract to extract information from PDF documents and stores the data extracted using textract in a json file.
 
 ```
-$ python test.py
+$ python textract.py
 ```
 
 
-3. The output will be saved in the `output.txt` file. You can review the extracted information there.
+3. The output will be saved in the `output.json` file. You can review the extracted information there.
 
 ## Built With
 
