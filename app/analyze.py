@@ -1,7 +1,5 @@
 import json
+import objects
 
-# Load the data
-with open('app/output.json', 'r') as file:
-    blocks = json.load(file)
-
-
+document = objects.Document('app/output.json')
+document.print_pages()

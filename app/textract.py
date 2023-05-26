@@ -2,7 +2,6 @@ import boto3
 import time
 import json
 
-
 def upload_to_s3(filepath, bucket, filename):
     """Uploads a file to an S3 bucket."""
     s3 = boto3.client('s3')
@@ -62,3 +61,4 @@ def process_pdf(filepath, bucket, filename, output_path):
 
 # Example usage
 process_pdf('documents/test.pdf', 'pdf-to-text-aws', 'test.pdf', 'app/output.json')
+
