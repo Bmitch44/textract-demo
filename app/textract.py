@@ -1,3 +1,6 @@
+"""
+Uses AWS Textract document analysis to extract text, forms, and tables from a PDF file.
+"""
 import boto3
 import time
 import json
@@ -18,7 +21,7 @@ def start_document_analysis(bucket, filename):
                 'Name': filename
             }
         },
-        FeatureTypes=["TABLES", "FORMS"]
+        FeatureTypes=['TABLES', 'FORMS']
     )
 
     return response['JobId']
