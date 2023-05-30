@@ -42,4 +42,4 @@ def deskew_image(pdf_path, output_path):
     
 
 # Example usage
-deskew_image('documents/test.pdf', 'app/test')
+deskew_image('documents/test.pdf', 'documents/test_deskewed')

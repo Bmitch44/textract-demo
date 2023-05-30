@@ -40,4 +40,4 @@ def process_pdf(filepath, bucket, filename, output_path):
 
 
 # Example usage
-process_pdf('documents/test.pdf', 'pdf-to-text-aws', 'test.pdf', 'app/output_text.json')
+process_pdf('documents/test_deskewed.png', 'pdf-to-text-aws', 'test_deskewed.png', 'app/output_deskewed_text.json')
