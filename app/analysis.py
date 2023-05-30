@@ -10,4 +10,4 @@ def process_document_analysis_result(filepath):
     in_order = doc.pages[0].getLinesInReadingOrder()
     return in_order
 
-print(process_document_analysis_result('app/output_text.json'))
+print(process_document_analysis_result('app/output2.json'))

@@ -2,7 +2,6 @@
 Uses AWS Textract text detection to extract text from a PDF file.
 """
 import boto3
-import time
 import json
 
 def upload_to_s3(filepath, bucket, filename):
@@ -40,4 +39,4 @@ def process_pdf(filepath, bucket, filename, output_path):
 
 
 # Example usage
-process_pdf('documents/test_deskewed.png', 'pdf-to-text-aws', 'test_deskewed.png', 'app/output_deskewed_text.json')
+process_pdf('documents/test_deskewed.png', 'pdf-to-text-aws', 'test_deskewed.png', 'app/textract_results/output_deskewed_text.json')

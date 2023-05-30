@@ -63,5 +63,5 @@ def process_pdf(filepath, bucket, filename, output_path):
 
 
 # Example usage
-process_pdf('documents/test.pdf', 'pdf-to-text-aws', 'test.pdf', 'app/output.json')
+process_pdf('documents/test2.pdf', 'pdf-to-text-aws', 'test2.pdf', 'app/textract_results/output2.json')
 
