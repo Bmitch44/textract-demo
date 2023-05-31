@@ -31,12 +31,17 @@ $ conda activate aws-text
 
 2. Run the `textract.py` file to start the application. This file demonstrates the usage of AWS Textract to extract information from PDF documents and stores the data extracted using textract in a json file.
 
+You can change the test documents by changing the path for the `process_pdf` function
+
 ```
 $ python textract.py
 ```
 
 
-3. The output will be saved in the `output.json` file. You can review the extracted information there.
+3. The output will be saved in the `output.json` file or your desired path. You can review the extracted information there.
+
+## View results
+I have ran all 3 test documents through `textract.py` and have also ran the results through `bounding_box.py` to show the locations of the extarcted data from the pdf files. The outputs are located in `app/textract_results` and `app/bounding_box_results`.
 
 ## Built With
 
