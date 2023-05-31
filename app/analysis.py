@@ -1,6 +1,7 @@
 from trp import Document
 import json
 
+
 def process_document_analysis_result(filepath):
     """Processes the result of AWS Textract analysis. Returns analysis of the document."""
     with open(filepath, 'r') as f:
