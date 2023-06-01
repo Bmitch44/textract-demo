@@ -171,25 +171,11 @@ class Line(BaseBlock):
         return self._words
 
 
-class SelectionElement:
+class SelectionElement(BaseBlock):
 
     def __init__(self, block, blockMap):
-        self._confidence = block['Confidence']
-        self._geometry = Geometry(block['Geometry'])
-        self._id = block['Id']
+        super().__init__(block, blockMap)
         self._selectionStatus = block['SelectionStatus']
-
-    @property
-    def confidence(self):
-        return self._confidence
-
-    @property
-    def geometry(self):
-        return self._geometry
-
-    @property
-    def id(self):
-        return self._id
 
     @property
     def selectionStatus(self):
@@ -297,6 +283,10 @@ class Form:
     def addField(self, field):
         self._fields.append(field)
         self._fieldsMap[field.key.text] = field
+
+    def addSelectionElement(self, selectionElement):
+        self._fields.append(selectionElement)
+        self._fieldsMap[selectionElement.id] = selectionElement
 
     def __str__(self):
         s = ""
@@ -575,6 +565,10 @@ class Page:
                         logger.info(
                             f"INFO: Detected K/V where key does not have content. Excluding key from output. {f} - {item}"
                         )
+            elif item["BlockType"] == "SELECTION_ELEMENT":
+                s = SelectionElement(item, blockMap)
+                self._form.addSelectionElement(s)
+                self._content.append(s)
 
     def getLinesInReadingOrder(self):
         columns = []
