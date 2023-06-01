@@ -23,6 +23,7 @@ class BaseBlock():
         self._id = block['Id']
         self._text = ""
         self._text_type = ""
+        self._block_type = block['BlockType']
         if 'Text' in block and block['Text']:
             self._text = block['Text']
         if "Custom" in block and block['Custom']:
@@ -60,6 +61,10 @@ class BaseBlock():
     @property
     def textType(self):
         return self._text_type
+    
+    @property
+    def blockType(self):
+        return self._block_type
 
 
 class BoundingBox:

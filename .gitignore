@@ -9,3 +9,6 @@ __pycache__/
 
 # Ignore all __pycache__ directories
 **/__pycache__
+
+# Ignore .icloud files
+*.icloud
