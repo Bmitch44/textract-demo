@@ -19,10 +19,10 @@ def draw_boxes(file, output_path, blocks_path, line_width=4):
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype('documents/fonts/OpenSans-Regular.ttf', line_width*6)
 
-    color_dict = {"LINE": "Red", "TABLE": "Blue"}
+    color_dict = {"LINE": "Red", "TABLE": "Blue", "SELECTION_ELEMENT": "Green", "KEY_VALUE_SET": "Orange", "WORD": "Purple"}
 
     for page in doc.pages:
-        for line in page.lines + page.tables:
+        for line in page.content:
             box = line.geometry.boundingBox
             left = int(img_width * box.left)
             top = int(img_height * box.top)
@@ -49,6 +49,6 @@ def draw_boxes(file, output_path, blocks_path, line_width=4):
     image.save(output_path, 'PDF', resolution=100.0)
 
 # Example usage
-draw_boxes('documents/test2.pdf', 'app/bounding_box_results/output3_bb.pdf', 'app/textract_results/output2.json')
+draw_boxes('documents/test2.pdf', 'app/bounding_box_results/output2_bb.pdf', 'app/textract_results/output2.json')
 
 
