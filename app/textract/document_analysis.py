@@ -2,9 +2,9 @@
 A User interface where you input a pdf and get the json results and a pdf with bounding boxes drawn on it
 """
 
-from textract import process_pdf
-from textract_text import process_pdf as process_pdf_text
-from bounding_box import draw_boxes
+from .textract import process_pdf
+from .textract_text import process_pdf as process_pdf_text
+from .bounding_box import draw_boxes
 
 
 def run_document_analysis(filepath, bucket, filename, json_path):
@@ -25,6 +25,7 @@ def draw_bounding_boxes(filepath, bucket, filename, output_path, json_path, anal
         draw_boxes(filepath, output_path, json_path)
 
 # Example usage
-draw_bounding_boxes('documents/test2.pdf', 'pdf-to-text-aws', 'test2.pdf', 'app/bounding_box_results/output2.pdf', 'app/textract_results/output2.json')
+if __name__ == '__main__':
+    draw_bounding_boxes('documents/test2.pdf', 'pdf-to-text-aws', 'test2.pdf', 'app/bounding_box_results/output2.pdf', 'app/textract_results/output2.json')
 
     
