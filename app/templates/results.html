@@ -1,0 +1,7 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h2>Results</h2>
+<pre>{{ json_data }}</pre>
+<a href="{{ url_for('download_file', filename=pdf_filename) }}">Download PDF</a>
+{% endblock %}

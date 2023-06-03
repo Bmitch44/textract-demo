@@ -18,11 +18,11 @@ def run_text_detection(filepath, bucket, filename, json_path):
 def draw_bounding_boxes(filepath, bucket, filename, output_path, json_path, analysis=True):
     """Draws bounding boxes on a PDF file."""
     if analysis:
-        run_document_analysis(filepath, bucket, filename, json_path)
-        draw_boxes(filepath, output_path, json_path)
+        blocks = run_document_analysis(filepath, bucket, filename, json_path)
+        draw_boxes(filepath, output_path, blocks)
     else:
-        run_text_detection(filepath, bucket, filename, json_path)
-        draw_boxes(filepath, output_path, json_path)
+        blocks = run_text_detection(filepath, bucket, filename, json_path)
+        draw_boxes(filepath, output_path, blocks)
 
 # Example usage
 if __name__ == '__main__':

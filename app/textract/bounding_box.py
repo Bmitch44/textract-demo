@@ -1,20 +1,19 @@
 from PIL import ImageDraw, Image, ImageFont
 from pdf2image.pdf2image import convert_from_path
-import json
-import trp
+import textract.ctrp as ctrp
 
-def draw_boxes(file, output_path, blocks_path, line_width=4):
+def draw_boxes(filepath, output_path, blocks, line_width=4):
     """Draws bounding boxes on a PDF file."""
-    if file.lower().endswith('.pdf'):
-        image = convert_from_path(file, dpi=500)[0]
+    if filepath.lower().endswith('.pdf'):
+        image = convert_from_path(filepath, dpi=500)[0]
     else:
-        image = Image.open(file)
+        image = Image.open(filepath)
 
     img_width = image.width
     img_height = image.height
 
-    with open(blocks_path, 'r') as f:
-        doc = trp.Document(json.load(f))
+
+    doc = ctrp.Document(blocks)
 
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype('documents/fonts/OpenSans-Regular.ttf', line_width*6)
