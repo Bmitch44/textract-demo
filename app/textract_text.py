@@ -29,14 +29,15 @@ def store_text_detection_result(response, filepath):
     """Stores the result of AWS Textract text detection."""
     with open(filepath, 'w') as f:
         json.dump(response, f, indent=4)
-
+        return response
 
 def process_pdf(filepath, bucket, filename, output_path):
     """Processes a PDF file with AWS Textract text detection and stores the result."""
     upload_to_s3(filepath, bucket, filename)
     response = start_text_detection(bucket, filename)
-    store_text_detection_result(response, output_path)
+    return store_text_detection_result(response, output_path)
 
 
 # Example usage
-process_pdf('documents/test_deskewed.png', 'pdf-to-text-aws', 'test_deskewed.png', 'app/textract_results/output_deskewed_text.json')
+if __name__ == '__main__':
+    process_pdf('documents/test_deskewed.png', 'pdf-to-text-aws', 'test_deskewed.png', 'app/textract_results/output_deskewed_text.json')

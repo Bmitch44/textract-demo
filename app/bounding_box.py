@@ -49,6 +49,7 @@ def draw_boxes(file, output_path, blocks_path, line_width=4):
     image.save(output_path, 'PDF', resolution=100.0)
 
 # Example usage
-draw_boxes('documents/test2.pdf', 'app/bounding_box_results/output2_bb.pdf', 'app/textract_results/output2.json')
+if __name__ == '__main__':
+    draw_boxes('documents/test2.pdf', 'app/bounding_box_results/output2_bb.pdf', 'app/textract_results/output2.json')
 
 
