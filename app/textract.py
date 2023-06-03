@@ -50,8 +50,10 @@ def store_analysis_result(job_status, filepath):
 
         with open(filepath, 'w') as f:
             json.dump(result, f, indent=4)
+            return result
     else:
         print("Document analysis job failed.")
+        return None
 
 
 def process_pdf(filepath, bucket, filename, output_path):
@@ -59,9 +61,12 @@ def process_pdf(filepath, bucket, filename, output_path):
     upload_to_s3(filepath, bucket, filename)
     job_id = start_document_analysis(bucket, filename)
     job_status = wait_for_analysis(job_id)
-    store_analysis_result(job_status, output_path)
+    return store_analysis_result(job_status, output_path)
+        
+
 
 
 # Example usage
-process_pdf('documents/test2.pdf', 'pdf-to-text-aws', 'test2.pdf', 'app/textract_results/output2.json')
+if __name__ == '__main__':
+    process_pdf('documents/test2.pdf', 'pdf-to-text-aws', 'test2.pdf', 'app/textract_results/output2.json')
 
