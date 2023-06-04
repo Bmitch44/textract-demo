@@ -3,6 +3,7 @@
 <head>
     <title>Textract Demo</title>
     <!-- Add any other head elements here, such as stylesheets -->
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
     <header>
@@ -11,10 +12,11 @@
     </header>
 
     <!-- This is where the content of child templates will be inserted -->
-    {% block content %}
-    <a href="{{ url_for('upload_file') }}">Upload a PDF</a>
-    {% endblock %}
-
+    <div class="container">
+        {% block content %}
+        <a href="{{ url_for('upload_file') }}">Upload a PDF</a>
+        {% endblock %}
+    </div>
 
     <footer>
         <!-- Add footer content here -->
