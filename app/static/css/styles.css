@@ -1,0 +1,73 @@
+/* styles.css */
+
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #333;
+    color: #f0f0f0;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+footer {
+    background-color: #333;
+    color: #f0f0f0;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+input[type="file"],
+input[type="submit"] {
+    display: block;
+    margin-bottom: 20px;
+}
+
+pre {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+}
