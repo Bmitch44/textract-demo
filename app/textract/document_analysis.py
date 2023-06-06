@@ -31,16 +31,21 @@ def table_to_csv(blocks, output_path):
     df.to_csv(output_path, index=False)
 
 
-def draw_bounding_boxes(filepath, bucket, filename, output_path, json_path):
+def draw_bounding_boxes(filepath, bucket, filename, output_path, json_path, csv_path):
     """Draws bounding boxes on a PDF file."""
     blocks = run_document_analysis(filepath, bucket, filename, json_path)
-    table_to_csv(blocks, 'app/results/table_results/output.csv')
+    table_to_csv(blocks, csv_path)
     draw_boxes(filepath, output_path, blocks)
     
 
 
 # Example usage
 if __name__ == '__main__':
-    draw_bounding_boxes('documents/tests/test2.pdf', 'pdf-to-text-aws', 'test2.pdf', 'app/results/bounding_box_results/output2.pdf', 'app/results/textract_results/output2.json')
+    draw_bounding_boxes('documents/tests/test2.pdf',
+                        'pdf-to-text-aws',
+                        'test2.pdf',
+                        'app/results/bounding_box_results/output2.pdf',
+                        'app/results/textract_results/output2.json',
+                        'app/results/table_results/output2.csv')
 
     
