@@ -7,7 +7,6 @@ This includes deskewing the document, and converting it to a png file.
 from pdf2image.pdf2image import convert_from_path
 import cv2
 import numpy as np
-import pytesseract
 
 def convert_pdf_to_png(pdf_path, output_path):
     """Converts a PDF file to a PNG file."""
