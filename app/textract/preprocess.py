@@ -73,6 +73,7 @@ def deskew_pdf(pdf_path, filename, skew_path='app/results/skew_correction'):
     
     # now we will combine each image into a single pdf
     corrected_images[0].save(f"{skew_path}/corrected_{filename}", save_all=True, append_images=corrected_images[1:])
+    return f"{skew_path}/corrected_{filename}"
 
 if __name__ == "__main__":
     deskew_pdf('documents/tests/test.pdf', 'test.pdf')
