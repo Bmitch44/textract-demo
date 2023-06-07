@@ -2,10 +2,10 @@
 A User interface where you input a pdf and get the json results and a pdf with bounding boxes drawn on it
 """
 
-from textract import process_pdf
-from bounding_box import draw_boxes
-from preprocess import deskew_pdf
-from ctrp import Document
+from .textract import process_pdf
+from .bounding_box import draw_boxes
+from .preprocess import deskew_pdf
+from .ctrp import Document
 
 import pandas as pd
 
