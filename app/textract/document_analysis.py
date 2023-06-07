@@ -2,7 +2,7 @@
 A User interface where you input a pdf and get the json results and a pdf with bounding boxes drawn on it
 """
 
-from .textract import process_pdf
+from .textract import TextractProcessor
 from .bounding_box import draw_boxes
 from .preprocess import deskew_pdf
 from .ctrp import Document
@@ -22,7 +22,8 @@ class DocumentAnalysis:
     def run_document_analysis(self):
         """Runs AWS Textract analysis on a PDF file."""
         pp_filepath = deskew_pdf(self.filepath, self.filename)
-        return process_pdf(pp_filepath, self.bucket, self.filename, self.json_path)
+        textract = TextractProcessor(self.bucket)
+        return textract.process_pdf(pp_filepath, self.filename, self.json_path)
 
     def table_to_csv(self, blocks):
         """Converts a table in a PDF file to a CSV file."""
