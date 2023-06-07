@@ -1,72 +1,65 @@
-"""
-Uses AWS Textract document analysis to extract text, forms, and tables from a PDF file.
-"""
+# BEGIN: 8f3d4a5g6h7j
 import boto3
 import time
 import json
 
-def upload_to_s3(filepath, bucket, filename):
-    """Uploads a file to an S3 bucket."""
-    s3 = boto3.client('s3')
-    s3.upload_file(filepath, bucket, filename)
+class TextractProcessor:
+    def __init__(self, bucket):
+        self.bucket = bucket
+        self.s3 = boto3.client('s3')
+        self.textract = boto3.client('textract')
 
+    def upload_to_s3(self, filepath, filename):
+        """Uploads a file to an S3 bucket."""
+        self.s3.upload_file(filepath, self.bucket, filename)
 
-def start_document_analysis(bucket, filename):
-    """Starts AWS Textract analysis on a document in an S3 bucket."""
-    textract = boto3.client('textract')
-    response = textract.start_document_analysis(
-        DocumentLocation={
-            'S3Object': {
-                'Bucket': bucket,
-                'Name': filename
-            }
-        },
-        FeatureTypes=['TABLES', 'FORMS']
-    )
+    def start_document_analysis(self, filename):
+        """Starts AWS Textract analysis on a document in an S3 bucket."""
+        response = self.textract.start_document_analysis(
+            DocumentLocation={
+                'S3Object': {
+                    'Bucket': self.bucket,
+                    'Name': filename
+                }
+            },
+            FeatureTypes=['TABLES', 'FORMS']
+        )
 
-    return response['JobId']
+        return response['JobId']
 
+    def wait_for_analysis(self, job_id):
+        """Waits for AWS Textract analysis to complete."""
+        while True:
+            job_status = self.textract.get_document_analysis(JobId=job_id)
+            status = job_status['JobStatus']
 
-def wait_for_analysis(job_id):
-    """Waits for AWS Textract analysis to complete."""
-    textract = boto3.client('textract')
+            if status in ['SUCCEEDED', 'FAILED']:
+                break
 
-    while True:
-        job_status = textract.get_document_analysis(JobId=job_id)
-        status = job_status['JobStatus']
+            time.sleep(5)
 
-        if status in ['SUCCEEDED', 'FAILED']:
-            break
+        return job_status
 
-        time.sleep(5)
+    def store_analysis_result(self, job_status, filepath):
+        """Stores the result of AWS Textract analysis."""
+        if job_status['JobStatus'] == 'SUCCEEDED':
+            result = job_status
 
-    return job_status
+            with open(filepath, 'w') as f:
+                json.dump(result, f, indent=4)
+                return result
+        else:
+            print("Document analysis job failed.")
+            return None
 
+    def process_pdf(self, filepath, filename, output_path):
+        """Processes a PDF file with AWS Textract and stores the result."""
+        self.upload_to_s3(filepath, filename)
+        job_id = self.start_document_analysis(filename)
+        job_status = self.wait_for_analysis(job_id)
+        return self.store_analysis_result(job_status, output_path)
 
-def store_analysis_result(job_status, filepath):
-    """Stores the result of AWS Textract analysis."""
-    if job_status['JobStatus'] == 'SUCCEEDED':
-        result = job_status
-
-        with open(filepath, 'w') as f:
-            json.dump(result, f, indent=4)
-            return result
-    else:
-        print("Document analysis job failed.")
-        return None
-
-
-def process_pdf(filepath, bucket, filename, output_path):
-    """Processes a PDF file with AWS Textract and stores the result."""
-    upload_to_s3(filepath, bucket, filename)
-    job_id = start_document_analysis(bucket, filename)
-    job_status = wait_for_analysis(job_id)
-    return store_analysis_result(job_status, output_path)
-        
-
-
-
-# Example usage
 if __name__ == '__main__':
-    process_pdf('documents/test2.pdf', 'pdf-to-text-aws', 'test2.pdf', 'app/textract_results/output2.json')
+    processor = TextractProcessor('pdf-to-text-aws')
+    processor.process_pdf('documents/tests/test6.pdf', 'test6.pdf', 'app/results/textract_results/output6.json')
 

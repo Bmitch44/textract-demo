@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, send_file
-from textract.document_analysis import draw_bounding_boxes  # adjust this import as necessary
+from textract.document_analysis import DocumentAnalysis  # adjust this import as necessary
 import tempfile
 import os
 
@@ -22,7 +22,8 @@ def upload_file():
             pdf_path = os.path.join('app', 'results','bounding_box_results', 'output.pdf')
             csv_path = os.path.join('app', 'results', 'table_results', 'output.csv')
             # run the analysis and draw the bounding boxes
-            draw_bounding_boxes(temp_file.name, 'pdf-to-text-aws', file.filename, pdf_path, json_path, csv_path)
+            doc = DocumentAnalysis(temp_file.name, 'pdf-to-text-aws', file.filename, pdf_path, json_path, csv_path)
+            doc.draw_bounding_boxes()
             # close and delete the temporary file
             temp_file.close()
             # read the JSON data and send it to the user
