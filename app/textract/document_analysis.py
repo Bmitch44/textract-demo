@@ -2,10 +2,10 @@
 A User interface where you input a pdf and get the json results and a pdf with bounding boxes drawn on it
 """
 
-from .textract import process_pdf
-from .bounding_box import draw_boxes
-from .preprocess import deskew_pdf
-from .ctrp import Document
+from textract import process_pdf
+from bounding_box import draw_boxes
+from preprocess import deskew_pdf
+from ctrp import Document
 
 import pandas as pd
 
@@ -41,11 +41,11 @@ def draw_bounding_boxes(filepath, bucket, filename, output_path, json_path, csv_
 
 # Example usage
 if __name__ == '__main__':
-    draw_bounding_boxes('documents/tests/test2.pdf',
+    draw_bounding_boxes('documents/tests/test6.pdf',
                         'pdf-to-text-aws',
-                        'test2.pdf',
-                        'app/results/bounding_box_results/output2.pdf',
-                        'app/results/textract_results/output2.json',
-                        'app/results/table_results/output2.csv')
+                        'test6.pdf',
+                        'app/results/bounding_box_results/output6.pdf',
+                        'app/results/textract_results/output6.json',
+                        'app/results/table_results/output6.csv')
 
     

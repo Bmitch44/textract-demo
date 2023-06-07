@@ -1,11 +1,11 @@
 from PIL import ImageDraw, Image, ImageFont
 from pdf2image.pdf2image import convert_from_path
-import textract.ctrp as ctrp
+import ctrp as ctrp
 
 def draw_boxes(filepath, output_path, blocks, line_width=4):
     """Draws bounding boxes on a PDF file."""
     if filepath.lower().endswith('.pdf'):
-        image = convert_from_path(filepath, dpi=500)[0]
+        image = convert_from_path(filepath, dpi=300)[0]
     else:
         image = Image.open(filepath)
 
