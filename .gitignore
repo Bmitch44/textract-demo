@@ -12,3 +12,7 @@ __pycache__/
 
 # Ignore .icloud files
 *.icloud
+
+# Ignore Mac system files
+.DS_Store
+**/.DS_Store

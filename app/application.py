@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, send_file
-from textract.document_analysis import draw_bounding_boxes  # adjust this import as necessary
+from textract.document_analysis import DocumentAnalysis  # adjust this import as necessary
 import tempfile
 import os
+import json
 
 application = Flask(__name__)
 
@@ -18,18 +19,21 @@ def upload_file():
             temp_file = tempfile.NamedTemporaryFile(suffix='.pdf')
             file.save(temp_file.name)
             # create paths for the output files
-            json_path = os.path.join('app', 'textract_results', 'output.json')
-            output_path = os.path.join('app', 'bounding_box_results', 'output.pdf')
+            json_path = os.path.join('app', 'results', 'textract_results', 'output.json')
+            pdf_path = os.path.join('app', 'results','bounding_box_results', 'output.pdf')
+            csv_path = os.path.join('app', 'results', 'table_results', 'output.csv')
             # run the analysis and draw the bounding boxes
-            draw_bounding_boxes(temp_file.name, 'pdf-to-text-aws', file.filename, output_path, json_path)
+            doc = DocumentAnalysis(temp_file.name, 'pdf-to-text-aws', file.filename, json_path, csv_path, pdf_path)
+            doc.draw_bounding_boxes()
             # close and delete the temporary file
             temp_file.close()
             # read the JSON data and send it to the user
             with open(json_path, 'r') as f:
-                json_data = f.read()
+                json_data = json.load(f)
             # remove /app from the path so that the file can be downloaded
-            output_path = output_path[4:]
-            return render_template('results.html', json_data=json_data, pdf_filename=output_path)
+            pdf_path = pdf_path[4:]
+            csv_path = csv_path[4:]
+            return render_template('results.html', json_data=json_data, pdf_filename=pdf_path, csv_filename=csv_path)
     return render_template('upload.html')
 
 @application.route('/download/<path:filename>')
