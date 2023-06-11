@@ -9,7 +9,6 @@ from pdf2image import convert_from_path
 import numpy as np
 from PIL import Image
 import os
-
 from jdeskew.estimator import get_angle
 from jdeskew.utility import rotate
 
@@ -36,4 +35,4 @@ def deskew_pdf(pdf_path, filename, skew_path='app/results/skew_correction'):
 
 
 if __name__ == "__main__":
-    deskew_pdf('documents/tests/pdf_tests/test.pdf', 'test.pdf')
+    deskew_pdf('documents/tests/pdf_tests/test.pdf', 'test.pdf', 'tests/expected_output')
