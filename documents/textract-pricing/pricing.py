@@ -6,6 +6,7 @@ The 4 pricing compenents are:
 2. TABLES: $15 per 1000 pages
 3. FORMS: $50 per 1000 pages
 4. SIGNITURES: $3.50 per 1000 pages
+Other pricing components are shown in the self.prices dictionary.
 """
 
 class CostStructure:
