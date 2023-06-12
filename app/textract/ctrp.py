@@ -155,7 +155,7 @@ class Line(BaseBlock):
             for rs in block['Relationships']:
                 if (rs['Type'] == 'CHILD'):
                     for cid in rs['Ids']:
-                        if (blockMap[cid]["BlockType"] == "WORD"):
+                        if (cid in blockMap and blockMap[cid]["BlockType"] == "WORD"):
                             self._words.append(Word(blockMap[cid], blockMap))
 
     def __str__(self):
