@@ -1,10 +1,9 @@
 import os
 import pytest
-from PIL import Image, ImageChops
+from PIL import ImageChops
 import json
 from app.textract.bounding_box import draw_boxes 
 from pdf2image import convert_from_path
-
 
 
 @pytest.fixture
