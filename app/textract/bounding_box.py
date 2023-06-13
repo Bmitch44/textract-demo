@@ -1,6 +1,6 @@
 from PIL import ImageDraw, Image, ImageFont
 from pdf2image.pdf2image import convert_from_path
-import textract.ctrp as ctrp
+import app.textract.ctrp as ctrp
 
 def draw_boxes(filepath, output_path, blocks, line_width=4):
     """Draws bounding boxes on a PDF file."""
@@ -49,6 +49,9 @@ def draw_boxes(filepath, output_path, blocks, line_width=4):
 
 # Example usage
 if __name__ == '__main__':
-    draw_boxes('documents/test2.pdf', 'app/bounding_box_results/output2_bb.pdf', 'app/textract_results/output2.json')
+    import json
+    with open('app/results/textract_results/output2.json') as json_file:
+        blocks = json.load(json_file)
+    draw_boxes('documents/tests/pdf_tests/test2.pdf', 'tests/expected_output/expected_bb_test.pdf', blocks)
 
 
