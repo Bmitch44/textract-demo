@@ -65,6 +65,6 @@ class TextExtractor:
         return f"\nLINE:\n" + content.text + " "
 
 if __name__ == '__main__':
-    extractor = TextExtractor('app/results/textract_results/output2.json')
+    extractor = TextExtractor('app/results/textract_results/corrected_test_cropped_output.json')
     print(extractor.extract_text())
 
