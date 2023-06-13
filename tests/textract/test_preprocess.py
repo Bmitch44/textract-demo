@@ -1,9 +1,7 @@
 import os
 import pytest
-from PIL import ImageChops, Image
-from unittest.mock import patch
+from PIL import ImageChops
 from app.textract.preprocess import deskew_pdf
-import numpy as np
 
 from pdf2image import convert_from_path
 from jdeskew.estimator import get_angle
@@ -50,3 +48,7 @@ def test_deskew_pdf(output_path):
     for output_image, expected_image in zip(output_images, expected_images):
         diff = ImageChops.difference(output_image, expected_image)
         assert diff.getbbox() is None
+
+# This will automatically run the test if the script is run directly
+if __name__ == '__main__':
+    pytest.main([__file__])
