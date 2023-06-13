@@ -61,5 +61,5 @@ class TextractProcessor:
 
 if __name__ == '__main__':
     processor = TextractProcessor('pdf-to-text-aws')
-    processor.process_pdf('documents/tests/test6.pdf', 'test6.pdf', 'app/results/textract_results/output6.json')
+    processor.process_pdf('documents/tests/pdf_tests/corrected_test_cropped.pdf', 'corrected_test_cropped.pdf', 'app/results/textract_results/corrected_test_cropped_output.json')
 
