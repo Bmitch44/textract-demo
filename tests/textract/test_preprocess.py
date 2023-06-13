@@ -2,11 +2,7 @@ import os
 import pytest
 from PIL import ImageChops
 from app.textract.preprocess import deskew_pdf
-
 from pdf2image import convert_from_path
-from jdeskew.estimator import get_angle
-from jdeskew.utility import rotate
-
 
 
 @pytest.fixture
