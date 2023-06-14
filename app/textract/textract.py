@@ -8,6 +8,11 @@ import boto3
 class TextractProcessor:
     """
     A class used to process documents using AWS Textract service.
+
+    Attributes:
+        bucket (str): The name of the S3 bucket to use.
+        s3 (boto3.client): The S3 client.
+        textract (boto3.client): The Textract client.
     """
 
     def __init__(self, bucket):
