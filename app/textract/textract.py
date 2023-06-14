@@ -1,3 +1,7 @@
+"""
+An interface to process documents using AWS Textract service.
+"""
+
 import json
 import logging
 import time
