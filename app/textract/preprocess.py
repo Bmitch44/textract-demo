@@ -16,7 +16,11 @@ def deskew_pdf(pdf_path, filename, skew_path='app/results/skew_correction'):
     """
     Converts pdf to png, and then deskews the png file.
     """
-    images = convert_from_path(pdf_path)
+    try:
+        images = convert_from_path(pdf_path)
+    except Exception as e:
+        print(f"Error converting pdf to images: {e}")
+        return None
 
     if not os.path.exists(skew_path):
         os.makedirs(skew_path)
@@ -24,14 +28,22 @@ def deskew_pdf(pdf_path, filename, skew_path='app/results/skew_correction'):
     corrected_images = []
 
     for image in images:
-        image = np.array(image)
-        angle = get_angle(image)
-        rotated = rotate(image, angle, (255, 255, 255))
-        rotated = Image.fromarray(rotated)
-        corrected_images.append(rotated)
+        try:
+            image = np.array(image)
+            angle = get_angle(image)
+            rotated = rotate(image, angle, (255, 255, 255))
+            rotated = Image.fromarray(rotated)
+            corrected_images.append(rotated)
+        except Exception as e:
+            print(f"Error deskewing image: {e}")
+            return None
     
-    corrected_images[0].save(f"{skew_path}/corrected_{filename}", save_all=True, append_images=corrected_images[1:])
-    return f"{skew_path}/corrected_{filename}"
+    try:
+        corrected_images[0].save(f"{skew_path}/corrected_{filename}", save_all=True, append_images=corrected_images[1:])
+        return f"{skew_path}/corrected_{filename}"
+    except Exception as e:
+        print(f"Error saving corrected image: {e}")
+        return None
 
 
 if __name__ == "__main__":
