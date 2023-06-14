@@ -1,5 +1,5 @@
 """
-An fucntion to draw bounding boxes on a PDF file given textract results and save the result.
+A fucntion to draw bounding boxes on a PDF file given textract results and save the result.
 """
 
 from PIL import ImageDraw, Image, ImageFont
