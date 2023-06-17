@@ -1,6 +1,7 @@
 # AWS Textract Project
 
-![Textract Demo](documents/demos/textract-demo-v1.mp4)
+https://github.com/Bmitch44/textract-demo/assets/87099534/0b5a20c3-73d0-4c15-b866-32479afd6ba5
+
 
 This project aims to create a working product that utilizes AWS Textract to extract information from structured and semi-structured PDF documents. These documents may contain both handwritten and printed text.
 
