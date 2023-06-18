@@ -22,4 +22,4 @@ pytest_cache/
 .pytest_cache/
 
 # Ignore environment files
-.env
+*.env
