@@ -8,6 +8,7 @@ from .preprocess import deskew_pdf
 from .ctrp import Document
 
 import pandas as pd
+import json
 
 
 class DocumentAnalysis:
@@ -69,12 +70,17 @@ class DocumentAnalysis:
             print(f"Error converting table to CSV: {e}")
             return None
 
-    def draw_bounding_boxes(self):
+    def draw_bounding_boxes(self, testing=False, testing_blocks_path="app/results/textract_results/output3.json"):
         """
         Draws bounding boxes around the features identified by Textract on the document.
         """
         try:
-            blocks = self.run_document_analysis()
+            if testing:
+                with open(testing_blocks_path, 'r') as f:
+                    blocks = json.load(f)
+            else:
+                blocks = self.run_document_analysis()
+                
             if blocks is not None:
                 self.table_to_csv(blocks)
                 draw_boxes(self.filepath, self.output_path, blocks)

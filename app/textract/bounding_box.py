@@ -4,7 +4,7 @@ A fucntion to draw bounding boxes on a PDF file given textract results and save 
 
 from PIL import ImageDraw, Image, ImageFont
 from pdf2image.pdf2image import convert_from_path
-import app.textract.ctrp as ctrp
+from app.textract import ctrp
 import json
 
 
