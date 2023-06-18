@@ -1,7 +1,13 @@
-from flask import Flask, render_template, request, send_file
-from textract.document_analysis import DocumentAnalysis  # adjust this import as necessary
-import tempfile
 import os
+import sys
+
+# Get the parent directory of the current file
+parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+sys.path.append(parent_dir)
+
+from flask import Flask, render_template, request, send_file
+from app.textract.document_analysis import DocumentAnalysis  # adjust this import as necessary
+import tempfile
 import json
 
 application = Flask(__name__)
@@ -24,14 +30,13 @@ def upload_file():
             csv_path = os.path.join('app', 'results', 'table_results', 'output.csv')
             # run the analysis and draw the bounding boxes
             doc = DocumentAnalysis(temp_file.name, 'pdf-to-text-aws', file.filename, json_path, csv_path, pdf_path)
-            doc.draw_bounding_boxes()
+            doc.draw_bounding_boxes(testing=True)
             # close and delete the temporary file
             temp_file.close()
             # read the JSON data and send it to the user
             with open(json_path, 'r') as f:
                 json_data = json.load(f)
             # remove /app from the path so that the file can be downloaded
-            pdf_path = pdf_path[4:]
             csv_path = csv_path[4:]
             return render_template('results.html', json_data=json_data, pdf_filename=pdf_path, csv_filename=csv_path)
     return render_template('upload.html')
