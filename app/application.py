@@ -5,12 +5,15 @@ import sys
 parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(parent_dir)
 
-from flask import Flask, render_template, request, send_file
-from app.textract.document_analysis import DocumentAnalysis  # adjust this import as necessary
+from flask import Flask, render_template, request, send_file, jsonify
+from app.textract.document_analysis import DocumentAnalysis
+from app.textract.comprehend import TextComprehender, TextExtractor  # adjust this import as necessary
 import tempfile
 import json
 
 application = Flask(__name__)
+
+text_comprehender = TextComprehender()
 
 @application.route('/')
 def home():
@@ -36,9 +39,17 @@ def upload_file():
             # read the JSON data and send it to the user
             with open(json_path, 'r') as f:
                 json_data = json.load(f)
+
+            # extarct text from the document
+            text_extractor = TextExtractor(json_path=json_path)
+            text = text_extractor.extract_text()
+            # use your TextComprehender here to generate the response
+            response = text_comprehender.comprehend_text(text, init=True)
+
             # remove /app from the path so that the file can be downloaded
+            pdf_path = pdf_path[4:]
             csv_path = csv_path[4:]
-            return render_template('results.html', json_data=json_data, pdf_filename=pdf_path, csv_filename=csv_path)
+            return render_template('results.html', json_data=json_data, pdf_filename=pdf_path, csv_filename=csv_path, gpt_response=response)
     return render_template('upload.html')
 
 @application.route('/download/<path:filename>')
