@@ -5,6 +5,14 @@ tools including GPT-3 and GPT-4, and any other tools that I can find.
 
 import json
 from ctrp import Document
+import openai
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 class TextExtractor:
     def __init__(self, json_path):
@@ -64,7 +72,27 @@ class TextExtractor:
         """Processes LINE"""
         return f"\nLINE:\n" + content.text + " "
 
+
+class TextComprehender:
+    def __init__(self, text):
+        self.text = text
+
+    def comprehend_text(self):
+        """Comprehends the text using GPT-3"""
+        completion = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant that answers questions about the given text which represents a PDF document."},
+                {"role": "user", "content": "Give an overview of the following text which represents a PDF document:\n" + self.text}
+            ]
+        )
+        return completion
+        
+
+
 if __name__ == '__main__':
     extractor = TextExtractor('app/results/textract_results/corrected_test_cropped_output.json')
-    print(extractor.extract_text())
+    text = extractor.extract_text()
+    comprehender = TextComprehender(text)
+    print(comprehender.comprehend_text())
 
