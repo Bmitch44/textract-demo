@@ -1,73 +1,147 @@
-/* styles.css */
-
-/* Reset default styles */
-* {
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #F4F6F9;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-    line-height: 1.6;
-}
-
-header {
-    background-color: #333;
-    color: #f0f0f0;
-    padding: 20px 0;
-    text-align: center;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2em;
-}
-
-footer {
-    background-color: #333;
-    color: #f0f0f0;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-}
-
-footer p {
-    margin: 0;
-}
-
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #0056b3;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-h2 {
-    margin-bottom: 20px;
-}
-
-input[type="file"],
-input[type="submit"] {
-    display: block;
-    margin-bottom: 20px;
-}
-
-pre {
+  }
+  
+  .msger {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    max-width: 600px;
+    min-height: 500px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 15px;
+  }
+  
+  .msger-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #3A7BD5;
+    color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .msger-header-title {
+    font-size: 18px;
+  }
+  
+  .msger-chat {
     background-color: #fff;
-    border: 1px solid #ccc;
+    flex: 1;
+    overflow-y: auto;
     padding: 20px;
-}
+  }
+  
+  .msg {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .left-msg .msg-img {
+    margin-right: 10px;
+    background-image: url("https://img.icons8.com/dotty/160/futurama-bender.png");
+  }
+  
+  .right-msg .msg-img {
+    margin-left: 10px;
+    background-image: url("https://img.icons8.com/ios-filled/512/guest-male.png");
+  }
+  
+  .msg-img {
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+  }
+  
+  .msg-bubble {
+    max-width: 450px;
+    padding: 15px;
+    background-color: #efefef;
+    border-radius: 15px;
+  }
+  
+  .right-msg .msg-bubble {
+    background-color: #3A7BD5;
+    color: #fff;
+  }
+  
+  .msg-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .msg-info-name {
+    font-weight: bold;
+  }
+  
+  .msg-info-time {
+    font-size: 0.85em;
+  }
+  
+  .msger-inputarea {
+    display: flex;
+    padding: 10px 20px;
+    background-color: #3A7BD5;
+    color: #fff;
+  }
+  
+  .msger-input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .msger-send-btn {
+    background-color: #1A3A57;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    transition: background 0.2s;
+  }
+  
+  .msger-send-btn:hover {
+    background-color: #0B1723;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+  
+  #spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px; /* Or any other size */
+  }
+  
+  .loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3A7BD5;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

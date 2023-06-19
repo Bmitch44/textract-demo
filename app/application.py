@@ -17,7 +17,7 @@ text_comprehender = TextComprehender()
 
 @application.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
 
 @application.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -29,7 +29,7 @@ def upload_file():
             file.save(temp_file.name)
             # create paths for the output files
             json_path = os.path.join('app', 'results', 'textract_results', 'output.json')
-            pdf_path = os.path.join('app', 'results','bounding_box_results', 'output.pdf')
+            pdf_path = os.path.join('app', 'output.pdf')
             csv_path = os.path.join('app', 'results', 'table_results', 'output.csv')
             # run the analysis and draw the bounding boxes
             doc = DocumentAnalysis(temp_file.name, 'pdf-to-text-aws', file.filename, json_path, csv_path, pdf_path)
@@ -56,6 +56,15 @@ def upload_file():
 def download_file(filename):
     print(f"download_file - {filename}")
     return send_file(filename, as_attachment=True)
+
+@application.route('/chat')
+def chat():
+    return render_template('chat.html')
+
+@application.route('/get', methods=['GET', 'POST'])
+def get_bot_response():
+    userText = request.args.get('msg')
+    return text_comprehender.comprehend_text(userText)
 
 if __name__ == '__main__':
     application.run(debug=True)

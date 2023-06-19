@@ -1,6 +1,7 @@
 # AWS Textract Project
 
-https://github.com/Bmitch44/textract-demo/assets/87099534/0b5a20c3-73d0-4c15-b866-32479afd6ba5
+## New V2 Demo
+https://github.com/Bmitch44/textract-demo/assets/87099534/c86248af-6474-4a1b-ab65-697a058520d5
 
 This project aims to create a robust application that utilizes AWS Textract to extract information from structured and semi-structured PDF documents, and OpenAI's ChatGPT to interact with the application and analyze the results. These documents may contain both handwritten and printed text.
 
