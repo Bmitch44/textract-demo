@@ -4,7 +4,7 @@ tools including GPT-3 and GPT-4, and any other tools that I can find.
 """
 
 import json
-from ctrp import Document
+from app.textract.ctrp import Document
 import openai
 import os
 from dotenv import load_dotenv
@@ -74,25 +74,40 @@ class TextExtractor:
 
 
 class TextComprehender:
-    def __init__(self, text):
-        self.text = text
+    def __init__(self):
+        self.messages = []
 
-    def comprehend_text(self):
+    def comprehend_text(self, text, init=False):
         """Comprehends the text using GPT-3"""
+        initial_messages = [
+                {"role": "system", "content": "You are a helpful assistant that answers questions about the given text which\
+                  represents a PDF document on geological data found in Newfoundland and Labrador. You must give a structured\
+                  representation of the given text."},
+                {"role": "user", "content": "Give an overview of the following text which represents a PDF document:\n" + text}
+            ]
+        
+        if init:
+            self.messages = initial_messages
+        else:
+            self.messages.append({"role": "user", "content": text})
+
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo-16k",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant that answers questions about the given text which represents a PDF document."},
-                {"role": "user", "content": "Give an overview of the following text which represents a PDF document:\n" + self.text}
-            ]
+            messages=self.messages,
         )
-        return completion
         
+        return self._process_completion(completion)
+    
+    def _process_completion(self, completion):
+        """Processes the completion"""
+        message = completion.choices[0].message.content
+        self.messages.append({"role": "assistant", "content": message})
+        return message
 
 
 if __name__ == '__main__':
     extractor = TextExtractor('app/results/textract_results/corrected_test_cropped_output.json')
     text = extractor.extract_text()
-    comprehender = TextComprehender(text)
-    print(comprehender.comprehend_text())
+    comprehender = TextComprehender()
+    print(comprehender.comprehend_text(text))
 

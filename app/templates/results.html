@@ -2,6 +2,8 @@
 
 {% block content %}
 <div class="container">
+    <h2>Summary</h2>
+    <p>{{ gpt_response }}</p>
     <h2>Results</h2>
     <p>A pdf image with bounding boxes and labels drawn around detected text</p>
     <a href="{{ url_for('download_file', filename=pdf_filename) }}">Download PDF</a>
@@ -9,5 +11,4 @@
     <p>A csv file with any detected tables</p>
     <a href="{{ url_for('download_file', filename=csv_filename) }}">Download CSV</a>
     <pre>{{ json_data }}</pre>
-</div>
 {% endblock %}
