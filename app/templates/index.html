@@ -3,31 +3,17 @@
 <head>
     <title>Textract Demo</title>
     <!-- Add any other head elements here, such as stylesheets -->
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Chat</a></li>
-            </ul>
-        </nav>
-        <h1>Welcome to the Textract Demo</h1>
-        <!-- Add a navigation menu or other header elements here -->
-    </header>
-
-    <!-- This is where the content of child templates will be inserted -->
-    <div class="container">
-        {% block content %}
-        <a href="{{ url_for('upload_file') }}">Upload a PDF</a>
-        {% endblock %}
-    </div>
-
-    <footer>
-        <!-- Add footer content here -->
-        <p>© 2023 Textract Demo</p>
-    </footer>
+    <nav>
+        <ul class="navbar">
+            <li><a href="{{ url_for('home')}}">Home</a></li>
+            <li><a href="{{ url_for('chat')}}">Chat</a></li>
+            <li><a href="{{ url_for('upload_file') }}">Upload a PDF</a></li>
+        </ul>
+    </nav>
+    <div>{% block content %}{% endblock %}</div>
 </body>
 </html>

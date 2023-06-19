@@ -53,7 +53,7 @@ def draw_boxes(filepath, output_path, blocks, line_width=4):
                 draw.rectangle((left+2, top+2, left + text_width, top + text_height), fill="Blue")
                 draw.text((left, top), line.blockType, fill='White', font=font)
 
-        image.save(output_path, 'PDF', resolution=100.0)
+        image.save(output_path, 'PDF', resolution=200.0)
 
     except FileNotFoundError as e:
         print(f"Error: File not found. {e}")
