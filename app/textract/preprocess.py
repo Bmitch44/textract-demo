@@ -8,7 +8,7 @@ import os
 import logging
 import numpy as np
 from PIL import Image
-from pdf2image import convert_from_path
+from pdf2image.pdf2image import convert_from_path
 from jdeskew.estimator import get_angle
 from jdeskew.utility import rotate
 
@@ -40,7 +40,7 @@ def deskew_pdf(pdf_path, filename, skew_path='app/results/skew_correction'):
         try:
             image = np.array(image)
             angle = get_angle(image)
-            rotated = rotate(image, angle, (255, 255, 255))
+            rotated = rotate(image, angle)
             rotated = Image.fromarray(rotated)
             corrected_images.append(rotated)
         except Exception as e:
