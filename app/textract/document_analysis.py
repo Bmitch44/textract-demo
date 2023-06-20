@@ -2,36 +2,28 @@
 A User interface where you input a pdf and get the json results and a pdf with bounding boxes drawn on it
 """
 
-from .textract import TextractProcessor
-from .bounding_box import draw_boxes
-from .preprocess import deskew_pdf
-from .ctrp import Document
+from app.textract.textract import TextractProcessor
+from app.textract.bounding_box import draw_boxes
+from app.textract.preprocess import deskew_pdf
+from app.textract.ctrp import Document
 
 import pandas as pd
 import json
+import tempfile
 
 
 class DocumentAnalysis:
     """
     Analyzes a document using AWS Textract, converts detected tables to CSV format, 
     and draws bounding boxes on identified features.
-
-    Attributes:
-        filepath (str): Path to the document to be analyzed.
-        bucket (str): Name of the AWS S3 bucket where document is stored.
-        filename (str): Name of the document file.
-        json_path (str): Path where the JSON output of the analysis will be stored.
-        csv_path (str): Path where the converted CSV file will be stored.
-        output_path (str): Path where the document with drawn bounding boxes will be stored.
     """
-    
-    def __init__(self, filepath, bucket, filename, json_path, csv_path, output_path):
-        self.filepath = filepath
+
+    def __init__(self, dbs, bucket, hash_key):
+        self.dbs = dbs
         self.bucket = bucket
-        self.filename = filename
-        self.json_path = json_path
-        self.csv_path = csv_path
-        self.output_path = output_path
+        self.hash_key = hash_key
+        self.new_hash_key = None
+
 
     def run_document_analysis(self):
         """
@@ -41,14 +33,16 @@ class DocumentAnalysis:
             dict: The result of the Textract analysis or None if an error occurred.
         """
         try:
-            pp_filepath = deskew_pdf(self.filepath, self.filename)
+            
+            # pp_filepath = deskew_pdf(self.filepath, self.filename)
+            self.new_hash_key = deskew_pdf(self.dbs, self.hash_key)
             textract = TextractProcessor(self.bucket)
-            return textract.process_pdf(pp_filepath, self.filename, self.json_path)
+            return textract.process_pdf(self.dbs, self.new_hash_key)
         except Exception as e:
             print(f"Error running document analysis: {e}")
             return None
 
-    def table_to_csv(self, blocks):
+    def table_to_csv(self, dbs, blocks):
         """
         Converts tables found in the document into CSV format.
 
@@ -65,7 +59,11 @@ class DocumentAnalysis:
                             cells = [cell for cell in row.cells]
                             matricies.append(cells)
             df = pd.DataFrame(matricies)
-            df.to_csv(self.csv_path, index=False)
+            temp_file = tempfile.NamedTemporaryFile(suffix=".csv")
+            df.to_csv(temp_file.name, index=False)
+            csv_hash_key = dbs.memory.add(temp_file.name)
+            temp_file.close()
+            return csv_hash_key
         except Exception as e:
             print(f"Error converting table to CSV: {e}")
             return None
@@ -74,30 +72,38 @@ class DocumentAnalysis:
         """
         Draws bounding boxes around the features identified by Textract on the document, extarcts tables, and converts them to CSV format.
         """
-        try:
-            if testing:
-                with open(testing_blocks_path, 'r') as f:
-                    blocks = json.load(f)
-            else:
-                blocks = self.run_document_analysis()
+   
+        if testing:
+            json_hash_key = self.dbs.memory.add(testing_blocks_path)
+            blocks = json.loads(self.dbs.memory.get(hash_key=json_hash_key))
+        else:
+            json_hash_key = self.run_document_analysis()
+            blocks = json.loads(self.dbs.memory.get(hash_key=json_hash_key))
 
-            if blocks is not None:
-                self.table_to_csv(blocks)
-                draw_boxes(self.filepath, self.output_path, blocks)
-        except Exception as e:
-            print(f"Error drawing bounding boxes: {e}")
-            return None
-    
+
+        
+        if self.new_hash_key is not None:
+            hash_key = self.new_hash_key
+        else:
+            hash_key = self.hash_key
+        csv_hash_key = self.table_to_csv(self.dbs, blocks)
+        bb_hash_key = draw_boxes(self.dbs, hash_key, blocks, testing=testing)
+        keys = (bb_hash_key, csv_hash_key, json_hash_key)
+        return keys
+            
 
 # Example usage
 if __name__ == '__main__':
+    from db import DBs, DB
+    dbs = DBs(
+        memory=DB('dbs/memory'),
+        inputs=DB('dbs/inputs'),
+    )
+    hash_key = dbs.inputs.add('documents/tests/pdf_tests/test3.pdf')
     doc = DocumentAnalysis(
-        'documents/tests/test6.pdf',
+        dbs,
         'pdf-to-text-aws',
-        'test6.pdf',
-        'app/results/bounding_box_results/output6.pdf',
-        'app/results/textract_results/output6.json',
-        'app/results/table_results/output6.csv'
+        hash_key
     )
     doc.draw_bounding_boxes()
 

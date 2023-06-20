@@ -58,6 +58,9 @@ class DB:
         # move the file to the database
         self[hash_key] = value
 
+        # return the hash_key
+        return hash_key
+
     def get(self, hash_key=None, filename=None):
         if hash_key:
             filename = self.hash_map_ktv[hash_key]
@@ -80,11 +83,13 @@ class DB:
 @dataclass
 class DBs:
     memory: DB
+    inputs: DB
 
 
 if __name__ == '__main__':
     dbs = DBs(
-        memory=DB('dbs/memory', cleanup_on_exit=True)
+        memory=DB('dbs/memory', cleanup_on_exit=True),
+        inputs=DB('dbs/inputs', cleanup_on_exit=True),
     )
     dbs.memory.add('documents/tests/pdf_tests/test.pdf')
     print(dbs.memory.get(filename='test.pdf'))
