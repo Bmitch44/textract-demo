@@ -3,7 +3,7 @@ import pytest
 from PIL import ImageChops
 import json
 from app.textract.bounding_box import draw_boxes 
-from pdf2image import convert_from_path
+from pdf2image.pdf2image import convert_from_path
 
 
 @pytest.fixture

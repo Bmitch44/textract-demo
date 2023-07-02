@@ -7,53 +7,52 @@ This includes deskewing the document, and converting it to a png file.
 import os
 import logging
 import numpy as np
+import tempfile
 from PIL import Image
-from pdf2image import convert_from_path
+from pdf2image.pdf2image import convert_from_path
 from jdeskew.estimator import get_angle
 from jdeskew.utility import rotate
 
 
-def deskew_pdf(pdf_path, filename, skew_path='app/results/skew_correction'):
-    """
-    Convert a pdf file to png, and then deskew the png file.
-
-    Parameters:
-        pdf_path (str): The path of the pdf file to deskew.
-        filename (str): The name of the file.
-        skew_path (str): The path to save the corrected png file. Default is 'app/results/skew_correction'.
-
-    Returns:
-        str: The path of the corrected png file or None if an error occurred.
-    """
+def deskew_pdf(dbs, hash_key):
+    # try to get the pdf from memory
     try:
-        images = convert_from_path(pdf_path)
+        path = f"{dbs.inputs.path}/{hash_key}"
+        image = convert_from_path(path)[0]
     except Exception as e:
         logging.error(f"Error converting pdf to images: {e}")
         return None
 
-    if not os.path.exists(skew_path):
-        os.makedirs(skew_path)
-
-    corrected_images = []
-
-    for image in images:
-        try:
-            image = np.array(image)
-            angle = get_angle(image)
-            rotated = rotate(image, angle, (255, 255, 255))
-            rotated = Image.fromarray(rotated)
-            corrected_images.append(rotated)
-        except Exception as e:
-            logging.error(f"Error deskewing image: {e}")
-            return None
-    
+    # try to deskew the image
     try:
-        corrected_images[0].save(f"{skew_path}/corrected_{filename}", save_all=True, append_images=corrected_images[1:])
-        return f"{skew_path}/corrected_{filename}"
+        image = np.array(image)
+        angle = get_angle(image)
+        rotated = rotate(image, angle)
+        rotated = Image.fromarray(rotated)
+        image = rotated
+    except Exception as e:
+        logging.error(f"Error deskewing image: {e}")
+        return None
+    
+    # try to save the image
+    try:
+        temp_file = tempfile.NamedTemporaryFile(suffix=".pdf")
+        image.save(temp_file.name)
+        new_hash_key = dbs.memory.add(temp_file.name)
+        # close and delete the temporary file
+        temp_file.close()
+        return new_hash_key
     except Exception as e:
         logging.error(f"Error saving corrected image: {e}")
         return None
 
 
 if __name__ == "__main__":
-    deskew_pdf('documents/tests/pdf_tests/test.pdf', 'test.pdf', 'tests/expected_output')
+    from db import DBs, DB
+    dbs = DBs(
+        memory=DB('dbs/memory'),
+        inputs=DB('dbs/inputs'),
+    )
+    hash_key = dbs.inputs.add('documents/tests/pdf_tests/test.pdf')
+    deskew_pdf(dbs, hash_key)
+    # deskew_pdf('documents/tests/pdf_tests/test.pdf', 'test.pdf', 'tests/expected_output')

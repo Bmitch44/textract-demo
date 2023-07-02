@@ -5,6 +5,7 @@ An interface to process documents using AWS Textract service.
 import json
 import logging
 import time
+import tempfile
 
 import boto3
 
@@ -94,7 +95,7 @@ class TextractProcessor:
 
         return job_status
 
-    def store_analysis_result(self, job_status, filepath):
+    def store_analysis_result(self, db, job_status):
         """
         Stores the result of AWS Textract analysis.
 
@@ -108,29 +109,27 @@ class TextractProcessor:
         if job_status and job_status['JobStatus'] == 'SUCCEEDED':
             result = job_status
             try:
-                with open(filepath, 'w') as f:
+                temp_file = tempfile.NamedTemporaryFile(suffix=".json")
+
+                with open(temp_file.name, 'w') as f:
                     json.dump(result, f, indent=4)
-                return result
+
+                new_hash_key = db.add(temp_file.name)
+                temp_file.close()
+                return new_hash_key
             except Exception as e:
                 logging.error(f"Error storing analysis result: {e}")
         else:
             logging.error("Document analysis job failed.")
 
-    def process_pdf(self, filepath, filename, output_path):
-        """
-        Processes a PDF file with AWS Textract and stores the result.
+    
+    def process_pdf(self, dbs, hash_key):
 
-        Parameters:
-            filepath (str): The path of the PDF file to process.
-            filename (str): The name of the file.
-            output_path (str): The path to store the result.
+        path = f"{dbs.memory.path}/{hash_key}"
 
-        Returns:
-            dict: The result of the analysis or None if an error occurred.
-        """
-        self.upload_to_s3(filepath, filename)
+        self.upload_to_s3(path, hash_key)
 
-        job_id = self.start_document_analysis(filename)
+        job_id = self.start_document_analysis(hash_key)
         if not job_id:
             return
 
@@ -138,13 +137,15 @@ class TextractProcessor:
         if not job_status:
             return
 
-        return self.store_analysis_result(job_status, output_path)
+        return self.store_analysis_result(dbs.memory, job_status)
 
 
 if __name__ == '__main__':
-    processor = TextractProcessor('pdf-to-text-aws')
-    processor.process_pdf(
-        'documents/tests/pdf_tests/corrected_test_cropped.pdf', 
-        'corrected_test_cropped.pdf', 
-        'app/results/textract_results/corrected_test_cropped_output.json'
+    from db import DB, DBs
+    dbs = DBs(
+        memory=DB('dbs/memory'),
+        inputs=DB('dbs/inputs')
     )
+    hash_key = dbs.memory.add('documents/tests/pdf_tests/corrected_test_cropped.pdf')
+    processor = TextractProcessor('pdf-to-text-aws')
+    processor.process_pdf(dbs, hash_key)
